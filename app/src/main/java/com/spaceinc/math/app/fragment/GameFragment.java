@@ -46,6 +46,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         endGameFragment = new EndGameFragment();
         view = inflater.inflate(R.layout.game_fragment, container, false);
         bundle = getArguments();
+        bundle.putInt("SCORE", 0);
         resources = getResources();
         initViews();
         scoreCounter = 0;
@@ -60,12 +61,14 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Button received = view.findViewById(v.getId());
-        if (received.getText().equals(rightButton.toString())) {
+        if (received.getText().equals(rightAnswer.toString())) {
             timer.cancel();
             scoreCounter = scoreCounter + 1 * 10;
             bundle.putInt("SCORE", scoreCounter);
+            score.setText(String.format(resources.getString(R.string.score), bundle.get("SCORE")));
             nextQuestion();
         } else {
+            timer.cancel();
             endGame();
         }
     }
@@ -74,7 +77,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         rightAnswer = randomizeExampleKey();
         rightButton = randomizeButtonKey();
         question.setText(equationMap.get(rightAnswer));
-        for (int i = 1; i < buttonList.size(); i++) {
+        for (int i = 0; i < buttonList.size(); i++) {
             if (i == rightButton) {
                 buttonList.get(i).setText(String.valueOf(rightAnswer));
             } else {
@@ -85,7 +88,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setCountDown() {
-        timer = new CountDownTimer(40000, 1000) {
+        timer = new CountDownTimer(7000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 String timerText = resources.getString(R.string.timer);
@@ -100,7 +103,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     }
 
     private void endGame() {
-        ((MainActivity) getActivity()).loadFragment(endGameFragment);
+        ((MainActivity) getActivity()).loadFragment(new EndGameFragment());
     }
 
     private void initViews() {
@@ -122,9 +125,9 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         equationMap.put(1, " 25 + 4 - 28 ");
         equationMap.put(2, " 7 - 9 + 4 ");
         equationMap.put(3, " 38 - 2 - 33 ");
-        equationMap.put(4, "8-4 ");
-        equationMap.put(5, "12 - 7 ");
-        equationMap.put(6, "- 3 + 9 ");
+        equationMap.put(4, " 8 - 4 ");
+        equationMap.put(5, " 12 - 7 ");
+        equationMap.put(6, " - 3 + 9 ");
         equationMap.put(7, " 8 - 1 ");
         equationMap.put(8, " 18 - 10 ");
         equationMap.put(9, " 11 - 2 ");
@@ -142,11 +145,10 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setButtonMap() {
-        buttonList.add(null);
-        buttonList.add(1, btn1);
-        buttonList.add(2, btn2);
-        buttonList.add(3, btn3);
-        buttonList.add(4, btn4);
+        buttonList.add( btn1);
+        buttonList.add( btn2);
+        buttonList.add( btn3);
+        buttonList.add( btn4);
     }
 
     private Integer randomizeExampleKey() {
@@ -157,7 +159,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
 
     private Integer randomizeButtonKey() {
         random = new Random();
-        Integer key = random.nextInt(4 + 1);
+        Integer key = random.nextInt(4);
         return key;
     }
 }
