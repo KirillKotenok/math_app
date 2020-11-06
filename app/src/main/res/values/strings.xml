@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">math_app</string>
+    <string name="restart">Restart</string>
+    <string name="exit">Exit</string>
+    <string name="result">Your score: %s\n\nDo you want to retry?</string>
+    <string name="question">Math expression \n\n%s</string>
+    <string name="start_text">Tap anywhere to \nstart!</string>
+    <string name="timer">Time: %d</string>
+</resources>
